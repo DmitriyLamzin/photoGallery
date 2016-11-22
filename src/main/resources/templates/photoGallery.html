@@ -1,0 +1,24 @@
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Upload form</title>
+        <link rel="stylesheet" type="text/css" media="all"
+              th:href="@{/css/bootstrap.min.css}"/>
+        <link rel="stylesheet" type="text/css" media="all"
+              th:href="@{/css/{stylesheet}(stylesheet=${stylesheet})}"/>
+
+    </head>
+    <body>
+        <div align="center" th:if="${message}">
+            <h2 th:text="${message}"/>
+        </div>
+        <div align="center">
+            <span th:each="file : ${files}">
+                <br th:if="${files.indexOf(file)}%${row}==0"/>
+                <span>
+                    <img width="200" height="200" th:src="${file}" th:width="${width}" th:height="${height}"  />
+                </span>
+            </span>
+            <h3>Number of uploaded photos: <span th:text="${files.size()}"/></h3>
+        </div>
+    </body>
+</html>

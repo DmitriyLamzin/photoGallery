@@ -1,0 +1,21 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Upload form</title>
+		<link rel="stylesheet" type="text/css" media="all"
+			  th:href="@{/css/{stylesheet}(stylesheet=${stylesheet})}"/>
+		<link rel="stylesheet" type="text/css" media="all"
+			  th:href="@{/css/bootstrap.min.css}"/>
+	</head>
+	<body>
+		<div class="form-group">
+			<form class="form-upload" method="POST" enctype="multipart/form-data" th:action="@{/photo}">
+				<h4 class="text-center">Choose your picture</h4>
+				<label for="picture" class="sr-only">Pictures to upload:</label>
+				<input type="file" id="picture" class="form-control" name="file" multiple="" />
+				<h4 class="text-center">and create your gallery</h4>
+
+				<button class="btn btn-md btn-primary btn-block" type="submit">Create gallery</button>
+			</form>
+		</div>
+	</body>
+</html>
