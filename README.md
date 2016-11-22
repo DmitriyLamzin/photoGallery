@@ -8,6 +8,9 @@ User can upload only <code>*.png</code> files.
 <h3>Additional RESTlike options</h3>
 
 <code>/photo/original</code> - shows original sizes of uploaded images;
+
 <code>/photo/row/{number}</code> - sets up a number of rows of images on the page;
+
 <code>/photo/wh/{XXXxZZZ}</code> - sets a size of image on the html page. XXX - widht, ZZZ - height;
+
 <code>/photo/blackbackground</code> - sets a black background to the gallery page;
