@@ -16,11 +16,19 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+/**
+ * Implementation of {@link StorageService} interface.
+ *
+ * This implementation works with file system.
+ * */
 @Service
 public class FileSystemStorageService implements StorageService {
 
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+  /**
+   * The directory, where to store files
+   * */
   private final Path rootLocation;
 
   @Autowired
