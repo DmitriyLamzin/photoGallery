@@ -32,8 +32,7 @@ public interface StorageService {
   /**
    * Loads all file paths from storage.
    *
-   * @return a stream of {@link java.nio.file.Path}.
-   * Each path from the stream corresponds to loaded file.
+   * @return a stream of {@link java.nio.file.Path}, which correspond to every loaded file.
    * */
   Stream<Path> loadAll();
 
