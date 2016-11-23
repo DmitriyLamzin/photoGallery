@@ -3,6 +3,8 @@ package com.github.dmitriylamzin.controller;
 import com.github.dmitriylamzin.storage.StorageException;
 import com.github.dmitriylamzin.storage.StorageFileNotFoundException;
 import com.github.dmitriylamzin.storage.StorageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
 * RESTLike service for uploading PNG type files.
@@ -54,8 +57,15 @@ public class FileUploadController {
    * */
   private final StorageService storageService;
 
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+  /**
+   * Constructor.
+   * */
   @Autowired
   public FileUploadController(StorageService storageService) {
+    logger.debug("initialization");
+    logger.debug("setting up storage service - " + storageService.getClass());
     this.storageService = storageService;
   }
 
@@ -64,6 +74,7 @@ public class FileUploadController {
   * */
   @GetMapping
   public String getUploadForm(Model model) throws IOException {
+    logger.info("getting upload form");
     model.addAttribute("stylesheet", DEFAULT_STYLESHEET);
     storageService.deleteAll();
     storageService.init();
@@ -77,6 +88,7 @@ public class FileUploadController {
    * */
   @GetMapping("/gallery")
   public String listUploadedFiles(Model model) throws IOException {
+    logger.info("getting gallery page");
     getUploadedFilesWithDefaultAttributes(model);
     return "photoGallery";
   }
@@ -89,6 +101,7 @@ public class FileUploadController {
    * */
   @GetMapping("/blackbackground")
   public String changeBackgraund(Model model) throws IOException {
+    logger.info("setting the black background stylesheet");
     String blackStylesheet = "black.css";
     getUploadedFilesWithDefaultAttributes(model);
     model.addAttribute("stylesheet", blackStylesheet);
@@ -105,6 +118,7 @@ public class FileUploadController {
    * */
   @GetMapping("/row/{rowNumber:\\d+}")
   public String setRowNubers(@PathVariable String rowNumber, Model model) throws IOException {
+    logger.info("setting number of image rows to " + rowNumber);
     getUploadedFilesWithDefaultAttributes(model);
     model.addAttribute("row", rowNumber);
     return "photoGallery";
@@ -120,7 +134,11 @@ public class FileUploadController {
    * */
   @GetMapping("/wh/{wh:\\d{3}x\\d{3}}")
   public String setPictureSize(@PathVariable String wh, Model model) throws IOException {
+    logger.info("setting image size to " + wh);
     String[] splittedWh = wh.split("x");
+    logger.info("Image height " + splittedWh[1]);
+    logger.info("Image width " + splittedWh[0]);
+
     getUploadedFilesWithDefaultAttributes(model);
     model.addAttribute("height", splittedWh[1]);
     model.addAttribute("width", splittedWh[0]);
@@ -135,6 +153,7 @@ public class FileUploadController {
    * */
   @GetMapping("/original")
   public String getPicturesWithOriginalSize(Model model) throws IOException {
+    logger.info("setting image to original size");
     getUploadedFilesWithDefaultAttributes(model);
     model.addAttribute("height", "");
     model.addAttribute("width", "");
@@ -142,6 +161,7 @@ public class FileUploadController {
   }
 
   private void getUploadedFilesWithDefaultAttributes(Model model) {
+    logger.info("loading all images from storage");
     model.addAttribute("files", storageService
             .loadAll()
             .map(path ->
@@ -169,7 +189,7 @@ public class FileUploadController {
   @GetMapping("/files/{filename:.+}")
   @ResponseBody
   public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-
+    logger.info("loading image as a resource with name " + filename);
     Resource file = storageService.loadAsResource(filename);
     return ResponseEntity
             .ok()
@@ -188,6 +208,7 @@ public class FileUploadController {
   @PostMapping
   public String handleFileUpload(@RequestParam("file") MultipartFile[] files,
                                  RedirectAttributes redirectAttributes) {
+    logger.info("uploading images  " + Stream.of(files));
 
     storageService.store(files);
     redirectAttributes.addFlashAttribute("message",
@@ -207,6 +228,7 @@ public class FileUploadController {
    * */
   @ExceptionHandler(StorageFileNotFoundException.class)
   public ModelAndView handleStorageFileNotFound(StorageFileNotFoundException fileNotFoundException) {
+    logger.info("file not found: " + fileNotFoundException.getMessage());
     ModelAndView model = new ModelAndView();
     model.addObject("msg", fileNotFoundException.getMessage());
     model.addObject("code", 404);
@@ -226,6 +248,7 @@ public class FileUploadController {
    * */
   @ExceptionHandler(StorageException.class)
   public ModelAndView handleStorageException(StorageException storageException) {
+    logger.info("storage exception has occurred: " + storageException.getMessage());
     ModelAndView model = new ModelAndView();
     model.addObject("msg", storageException.getMessage());
     model.addObject("code", 500);
