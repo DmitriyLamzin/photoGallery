@@ -14,3 +14,17 @@ User can upload only <code>*.png</code> files.
 <code>/photo/wh/{XXXxZZZ}</code> - sets a size of image on the html page. XXX - widht, ZZZ - height;
 
 <code>/photo/blackbackground</code> - sets a black background to the gallery page;
+
+<h2>Technology stack:</h2>
+
+<ul>
+  <li> Spring Boot + Embedded Tomcat
+  <li> Spring Thymeleaf
+  <li> Twitter Bootstrap
+
+<h2>Build tool:</h2>
+  <p>Maven:</p>
+  <p>Maven Jacoco Plugin</p>
+  <p>Maven Checkstyle Plugin</p>
+
+
