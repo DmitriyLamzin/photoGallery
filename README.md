@@ -18,13 +18,14 @@ User can upload only <code>*.png</code> files.
 <h2>Technology stack:</h2>
 
 <ul>
-  <li> Spring Boot + Embedded Tomcat
-  <li> Spring Thymeleaf
-  <li> Twitter Bootstrap
-
-<h2>Build tool:</h2>
-  <p>Maven:</p>
-  <p>Maven Jacoco Plugin</p>
-  <p>Maven Checkstyle Plugin</p>
-
+<li> Spring Boot + Embedded Tomcat</li>
+<li> Spring Thymeleaf</li>
+<li> Twitter Bootstrap</li>
+<li>Build tool: Maven:
+  <ul>
+    <li>Maven Jacoco Plugin
+    <li>Maven Checkstyle Plugin
+</li>
+    
+</ul>
 
